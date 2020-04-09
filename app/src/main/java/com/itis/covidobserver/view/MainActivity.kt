@@ -5,6 +5,7 @@ package com.itis.covidobserver.view
 //import com.anychart.chart.common.dataentry.ValueDataEntry
 //import com.anychart.enums.Align
 //import com.anychart.enums.LegendLayout
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.SearchView
@@ -33,15 +34,15 @@ class MainActivity : SuperActivity<MainViewModel>() {
 
         initWorldData()
         bind = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        refresh()
-        swipeRefreshLayout.setOnRefreshListener {
-            var runnable = Runnable {
-                refresh()
-            }
-            runnable.run()
-        }
 
+        swipeRefreshLayout.setOnRefreshListener {
+            Runnable {
+                refresh()
+            }.run()
+        }
+        refresh()
     }
+
 
     private fun initWorldData() {
         getViewModel().apply {
@@ -81,26 +82,55 @@ class MainActivity : SuperActivity<MainViewModel>() {
                 it.colors = ColorTemplate.createColors(
                     intArrayOf(
                         ColorTemplate.rgb("d50000"),
-                        ColorTemplate.rgb("212121"),
-                        ColorTemplate.rgb("f5f5f5")
+                        ColorTemplate.rgb("757575"),
+                        ColorTemplate.rgb("FFFFFF")
                     )
                 )
 
             }
-        )
+        ).also {
+            it.setValueTextColor(Color.BLACK)
+            it.setValueTextSize(11f)
+
+        }
+        chart1.description.isEnabled = false
+        chart1.centerText = "Total: ${bind.data?.cases ?: 0}"
+        chart1.setEntryLabelColor(Color.BLACK)
+        chart1.setEntryLabelTextSize(11f)
         swipeRefreshLayout.isRefreshing = false
         chart1.animateXY(1400, 1400)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-
+        menuInflater.inflate(R.menu.menu, menu)
         val searchBarItem = menu?.findItem(R.id.search_bar)
         val searchBar = searchBarItem?.actionView as SearchView?
 
         searchBar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
+                getViewModel().apply {
+                    getQueryResponse(p0 ?: "").observe(this@MainActivity, Observer {
+                        when {
+                            it.data != null -> {
+                                startActivity(
+                                    CountryActivity.createIntent(
+                                        this@MainActivity,
+                                        it.data.country
+                                    )
+                                )
+                            }
+                            it.error != null -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "No such country found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    })
+                }
+                return true
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -110,9 +140,7 @@ class MainActivity : SuperActivity<MainViewModel>() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
     override fun getViewModel() =
         ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-
 
 }

@@ -11,6 +11,7 @@ android {
     dataBinding {
         enabled = true
     }
+    apply plugin: 'kotlin-kapt'
     defaultConfig {
         applicationId "com.itis.covidobserver"
         minSdkVersion 26

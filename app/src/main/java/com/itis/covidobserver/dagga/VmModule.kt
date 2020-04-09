@@ -4,6 +4,7 @@ import com.itis.covidobserver.viewmodel.ViewModelFactoryImpl
 import dagger.Module
 import dagger.Provides
 
+//not yet
 @Module
 class VmModule {
     @Provides

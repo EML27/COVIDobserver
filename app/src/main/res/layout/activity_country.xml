@@ -1,61 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.CountryActivity">
+<layout>
 
+    <data>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:text="Russia"
-        android:textColor="@color/colorPrimary"
+        <variable
+            name="data"
+            type="com.itis.covidobserver.net.responses.CountryResponse" />
+    </data>
 
-        android:textSize="16pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart_country"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/detailed_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        tools:context=".view.CountryActivity">
 
-        app:layout_constraintBottom_toTopOf="@id/country_info_layout"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintVertical_weight="1"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <LinearLayout
-        android:id="@+id/country_info_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chart_country"
-        app:layout_constraintVertical_weight="2">
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="Infected today"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16pt" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="1234"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="12pt" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@{data.country}"
+                android:textColor="@color/colorPrimary"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:textSize="16pt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart_country"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+
+                app:layout_constraintBottom_toTopOf="@id/country_info_layout"
+                app:layout_constraintTop_toBottomOf="@id/textView"
+                app:layout_constraintVertical_weight="1"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <LinearLayout
+                android:id="@+id/country_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chart_country"
+                app:layout_constraintVertical_weight="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Infected today"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16pt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{String.valueOf(data.active)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="4dp"
+                    android:background="@color/colorDivider" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Critical state"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16pt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{String.valueOf(data.critical)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="4dp"
+                    android:background="@color/colorDivider" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Died today"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16pt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{String.valueOf(data.todayDeaths)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12pt" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="4dp"
+                    android:background="@color/colorDivider" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

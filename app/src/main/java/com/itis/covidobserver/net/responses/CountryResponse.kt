@@ -9,7 +9,7 @@ data class CountryResponse(
     @SerializedName("cases")
     var cases: Int,
     @SerializedName("casesPerOneMillion")
-    var casesPerOneMillion: Int,
+    var casesPerOneMillion: Double,
     @SerializedName("country")
     var country: String,
     @SerializedName("countryInfo")
@@ -19,7 +19,7 @@ data class CountryResponse(
     @SerializedName("deaths")
     var deaths: Int,
     @SerializedName("deathsPerOneMillion")
-    var deathsPerOneMillion: Int,
+    var deathsPerOneMillion: Double,
     @SerializedName("recovered")
     var recovered: Int,
     @SerializedName("todayCases")
