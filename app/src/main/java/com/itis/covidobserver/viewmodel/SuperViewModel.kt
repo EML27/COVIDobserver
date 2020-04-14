@@ -8,6 +8,7 @@ abstract class SuperViewModel : ViewModel() {
 
     var disposable: Disposable? = null
 
+    //TODO: inject by dagger
     var interactor = ApiInteractorImpl()
 
     override fun onCleared() {

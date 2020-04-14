@@ -4,11 +4,13 @@ import com.itis.covidobserver.net.ApiFactory
 import com.itis.covidobserver.net.COVIDService
 import com.itis.covidobserver.net.responses.CountryResponse
 import com.itis.covidobserver.net.responses.WorldResponse
-import dagger.Component
 import io.reactivex.Single
 
-@Component
-class ApiInteractorImpl constructor(private val api: COVIDService = ApiFactory.covidService) :
+
+class ApiInteractorImpl constructor(
+    //TODO: inject by dagger
+    private val api: COVIDService = ApiFactory.covidService
+) :
     ApiInteractor {
 
 

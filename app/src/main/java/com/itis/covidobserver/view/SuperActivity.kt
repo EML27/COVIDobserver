@@ -7,5 +7,6 @@ import com.itis.covidobserver.viewmodel.ViewModelFactoryImpl
 abstract class SuperActivity<T : SuperViewModel> : AppCompatActivity() {
     abstract fun getViewModel(): SuperViewModel
 
-    var viewModelFactory = ViewModelFactoryImpl()
+    //TODO: inject by dagger
+    var viewModelFactory =  ViewModelFactoryImpl()
 }
