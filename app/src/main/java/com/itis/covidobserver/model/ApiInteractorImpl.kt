@@ -1,16 +1,13 @@
 package com.itis.covidobserver.model
 
-import com.itis.covidobserver.net.ApiFactory
 import com.itis.covidobserver.net.COVIDService
 import com.itis.covidobserver.net.responses.CountryResponse
 import com.itis.covidobserver.net.responses.WorldResponse
 import io.reactivex.Single
+import javax.inject.Inject
 
 
-class ApiInteractorImpl constructor(
-    //TODO: inject by dagger
-    private val api: COVIDService = ApiFactory.covidService
-) :
+class ApiInteractorImpl @Inject constructor( private val api: COVIDService)  :
     ApiInteractor {
 
 

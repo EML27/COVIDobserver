@@ -1,34 +1,37 @@
 package com.itis.covidobserver.view
 
-//import com.anychart.AnyChart
-//import com.anychart.chart.common.dataentry.DataEntry
-//import com.anychart.chart.common.dataentry.ValueDataEntry
-//import com.anychart.enums.Align
-//import com.anychart.enums.LegendLayout
+
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.itis.covidobserver.App
 import com.itis.covidobserver.R
 import com.itis.covidobserver.databinding.ActivityMainBinding
 import com.itis.covidobserver.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 
-class MainActivity : SuperActivity<MainViewModel>() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var bind: ActivityMainBinding
 
+    @Inject
+    lateinit var viewModel: MainViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -45,7 +48,7 @@ class MainActivity : SuperActivity<MainViewModel>() {
 
 
     private fun initWorldData() {
-        getViewModel().apply {
+        viewModel.apply {
             getWorldStats().observe(this@MainActivity, Observer {
                 when {
                     it.data != null -> {
@@ -109,7 +112,7 @@ class MainActivity : SuperActivity<MainViewModel>() {
 
         searchBar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                getViewModel().apply {
+                viewModel.apply {
                     getQueryResponse(p0 ?: "").observe(this@MainActivity, Observer {
                         when {
                             it.data != null -> {
@@ -140,7 +143,6 @@ class MainActivity : SuperActivity<MainViewModel>() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun getViewModel() =
-        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
 
 }

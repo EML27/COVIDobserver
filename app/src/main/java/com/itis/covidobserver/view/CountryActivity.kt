@@ -5,23 +5,25 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.itis.covidobserver.App
 import com.itis.covidobserver.R
 import com.itis.covidobserver.databinding.ActivityCountryBinding
 import com.itis.covidobserver.viewmodel.CountryViewModel
-import com.itis.covidobserver.viewmodel.SuperViewModel
 import kotlinx.android.synthetic.main.activity_country.*
+import javax.inject.Inject
 
-class CountryActivity : SuperActivity<SuperViewModel>() {
+class CountryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_country)
         initData()
@@ -33,14 +35,13 @@ class CountryActivity : SuperActivity<SuperViewModel>() {
     }
 
 
-
     private lateinit var bind: ActivityCountryBinding
 
-    override fun getViewModel() =
-        ViewModelProvider(this, viewModelFactory).get(CountryViewModel::class.java)
+    @Inject
+    lateinit var viewModel: CountryViewModel
 
     fun initData() {
-        getViewModel().apply {
+        viewModel.apply {
             getCountryResponse(
                 intent?.extras?.getString(COUNTRY_NAME) ?: ""
             ).observe(this@CountryActivity,
